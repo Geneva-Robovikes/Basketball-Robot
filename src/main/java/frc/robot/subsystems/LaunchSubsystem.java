@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,31 +19,27 @@ public class LaunchSubsystem extends SubsystemBase {
   private DigitalInput ballCheckSwitch = new DigitalInput(0);
   private MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
 
-  private float pushSpeed = 0.25f;
   private float intakeSpeed = 0.25f;
 
   public LaunchSubsystem() {
     launchBottomMotor.setInverted(true);
   }
 
-  private float getVelocity(){
-    //Put big boy equasion here
+  private double getVelocity(float distance, float angle){
+    return Math.sqrt((Math.sin(2 * angle))/(distance * -32));
   }
 
   private float getMotorInput(){
-    //Convert getVelocity() to motor inputs
+    //getVelocity() / (max motor speed * gear ratio)
+    return 0;
   }
 
   public void shoot(){
     launchMotors.set(getMotorInput());
   }
 
-  public void pushBall(){
-    pushMotor.set(pushSpeed);
-  }
-
-  public void returnPush(){
-    pushMotor.set(pushSpeed);
+  public void setPushSpeed(float speed){
+    pushMotor.set(speed);
   }
 
   public void intakeBall(){
