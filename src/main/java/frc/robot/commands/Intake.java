@@ -10,6 +10,7 @@ import frc.robot.subsystems.LaunchSubsystem;
 /** An example command that uses an example subsystem. */
 public class Intake extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
+  private float intakeSpeed = -0.25f;
 
   public Intake(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;
@@ -18,24 +19,25 @@ public class Intake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    launchSubsystem.setLauncherSpeed(intakeSpeed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    launchSubsystem.intakeBall();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Set motor speeds to 0
+    launchSubsystem.setLauncherSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     //Check if the back limit switch is pressed then return true
-    return false;
+    if(launchSubsystem.ballCheckSwitch.get()) {return true;}
+    else {return false;}
   }
 }

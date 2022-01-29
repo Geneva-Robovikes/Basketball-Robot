@@ -16,33 +16,23 @@ public class LaunchSubsystem extends SubsystemBase {
   private PWMVictorSPX pushMotor = new PWMVictorSPX(2);
   private PWMVictorSPX tiltXMotor = new PWMVictorSPX(3);
   private PWMVictorSPX tiltYMotor = new PWMVictorSPX(4);
-  private DigitalInput ballCheckSwitch = new DigitalInput(0);
   private MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
-
-  private float intakeSpeed = 0.25f;
+  public DigitalInput ballCheckSwitch = new DigitalInput(0);
+  public DigitalInput tiltGroundSwitch = new DigitalInput(1);
 
   public LaunchSubsystem() {
     launchBottomMotor.setInverted(true);
   }
 
-  private double getVelocity(float distance, float angle){
-    return Math.sqrt((Math.sin(2 * angle))/(distance * -32));
+  public void setLauncherSpeed(float speed) {
+    launchMotors.set(speed);
   }
 
-  private float getMotorInput(){
-    //getVelocity() / (max motor speed * gear ratio)
-    return 0;
-  }
-
-  public void shoot(){
-    launchMotors.set(getMotorInput());
-  }
-
-  public void setPushSpeed(float speed){
+  public void setPushSpeed(float speed) {
     pushMotor.set(speed);
   }
 
-  public void intakeBall(){
-    pushMotor.set(intakeSpeed);
+  public void setYTiltSpeed(float yTiltSpeed) {
+    tiltYMotor.set(-yTiltSpeed);
   }
 }

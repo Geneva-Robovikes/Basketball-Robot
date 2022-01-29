@@ -4,13 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
-  private boolean stop = false;
+  private float speed = 0.9f;
+  private float waitTime = 1.0f;
+  private Timer timer;
 
   public LaunchBall(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;
@@ -19,24 +22,25 @@ public class LaunchBall extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.start();
+    launchSubsystem.setLauncherSpeed(speed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    launchSubsystem.shoot();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Set motor speeds to 0
+    launchSubsystem.setLauncherSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(stop){return true;}
-    return false;
+    if(timer.hasElapsed(waitTime)){return true;}
+    else{return false;}
   }
 }
