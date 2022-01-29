@@ -20,6 +20,7 @@ public class YTiltLauncher extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    launchSubsystem.resetYTiltEncoder();
     launchSubsystem.setYTiltSpeed(tiltSpeed);
   }
 
@@ -34,7 +35,7 @@ public class YTiltLauncher extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //if current angle is greater than reqired angle
-    return false;
+    if(launchSubsystem.getTiltEncoderRotation() >= launchSubsystem.requiredAngle(launchSubsystem.getWheelVelocity(), launchSubsystem.getDistance(), 3.048, -9.807)) {return true;}
+    else {return false;}
   }
 }

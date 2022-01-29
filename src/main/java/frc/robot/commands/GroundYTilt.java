@@ -10,7 +10,7 @@ import frc.robot.subsystems.LaunchSubsystem;
 /** An example command that uses an example subsystem. */
 public class GroundYTilt extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
-  private float tiltSpeed = -0.25f;
+  private float tiltSpeed = -0.1f;
 
   public GroundYTilt(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;
