@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -44,13 +47,32 @@ public class Robot extends TimedRobot {
       CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
 
       Mat source = new Mat();
+      Mat blurredMat = new Mat();
+      Mat hsvMat = new Mat();
+      Mat mask = new Mat();
       Mat output = new Mat();
+
+      Scalar greenLow = new Scalar(97, 75, 75);
+      Scalar greenHigh = new Scalar(139, 100, 99);
+
 
       while(!Thread.interrupted()) {
         if (cvSink.grabFrame(source) == 0) {
           continue;
         }
-        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.blur(source, blurredMat, new Size(7, 7));
+        Imgproc.cvtColor(source, hsvMat, Imgproc.COLOR_BGR2HSV);
+        Core.inRange(hsvMat, greenLow, greenHigh, mask);
+
+        Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(24, 24));
+        Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(12, 12));
+       
+        Imgproc.erode(mask, output, erodeElement);
+        Imgproc.erode(mask, output, erodeElement);
+       
+        Imgproc.dilate(mask, output, dilateElement);
+        Imgproc.dilate(mask, output, dilateElement);
+
         outputStream.putFrame(output);
       }
     }).start();
