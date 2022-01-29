@@ -11,8 +11,8 @@ import frc.robot.subsystems.LaunchSubsystem;
 /** An example command that uses an example subsystem. */
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
-  private float speed = 0.9f;
-  private float waitTime = 1.0f;
+  private double speed = 0.9f;
+  private double waitTime = 1.0f;
   private Timer timer;
 
   public LaunchBall(LaunchSubsystem subsystem) {

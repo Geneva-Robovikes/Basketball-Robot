@@ -12,9 +12,9 @@ import frc.robot.subsystems.LaunchSubsystem;
 public class PushBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
   private Timer timer;
-  private float timerWait = 1;
+  private double timerWait = 1;
   private boolean firstTime = true;
-  private float pushSpeed = 0.25f;
+  private double pushSpeed = 0.25f;
 
   public PushBall(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;

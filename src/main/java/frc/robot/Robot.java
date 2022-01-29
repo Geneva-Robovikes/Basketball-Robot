@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 
     new Thread(() -> {
       final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
-      float tiltSpeed = 0.1f;
+      double tiltSpeed = 0.1;
 
       UsbCamera camera = CameraServer.startAutomaticCapture();
       camera.setResolution(640, 480);
