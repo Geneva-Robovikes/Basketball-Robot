@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.beans.Encoder;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
@@ -34,5 +36,12 @@ public class LaunchSubsystem extends SubsystemBase {
 
   public void setYTiltSpeed(float yTiltSpeed) {
     tiltYMotor.set(-yTiltSpeed);
+  }
+
+  public void setYTiltAngle(float angle) {
+    //Angle measured from the horizontal
+    //get angle - groundedAngle
+    //get arc length to travel
+    //use encoder to stop once distance is achieved
   }
 }
