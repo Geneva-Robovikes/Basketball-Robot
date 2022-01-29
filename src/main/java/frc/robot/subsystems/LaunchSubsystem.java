@@ -33,6 +33,10 @@ public class LaunchSubsystem extends SubsystemBase {
   }
 
   public void setYTiltSpeed(float yTiltSpeed) {
-    tiltYMotor.set(-yTiltSpeed);
+    tiltYMotor.set(yTiltSpeed);
+  }
+
+  public void setXTiltSpeed(float xTiltSpeed) {
+    tiltXMotor.set(xTiltSpeed);
   }
 }

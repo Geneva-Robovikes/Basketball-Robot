@@ -6,6 +6,7 @@ package frc.robot;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -17,6 +18,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LaunchSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,6 +42,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     new Thread(() -> {
+      final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
+      float tiltSpeed = 0.1f;
+
       UsbCamera camera = CameraServer.startAutomaticCapture();
       camera.setResolution(640, 480);
 
@@ -51,6 +56,7 @@ public class Robot extends TimedRobot {
       Mat hsvMat = new Mat();
       Mat mask = new Mat();
       Mat output = new Mat();
+      Rect box = new Rect();
 
       Scalar greenLow = new Scalar(97, 75, 75);
       Scalar greenHigh = new Scalar(139, 100, 99);
@@ -72,6 +78,16 @@ public class Robot extends TimedRobot {
        
         Imgproc.dilate(mask, output, dilateElement);
         Imgproc.dilate(mask, output, dilateElement);
+
+        box = Imgproc.boundingRect(output);
+        int boxXPos = box.x;
+        if(box != null){
+          if(boxXPos > 640/2){
+            launchSubsystem.setXTiltSpeed(tiltSpeed);
+          } else {
+            launchSubsystem.setXTiltSpeed(-tiltSpeed);
+          }
+        }
 
         outputStream.putFrame(output);
       }
