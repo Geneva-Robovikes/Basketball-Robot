@@ -8,18 +8,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class YTilt extends CommandBase {
+public class YTiltLauncher extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
+  private double tiltSpeed = 0.1;
 
-  public YTilt(LaunchSubsystem subsystem) {
+  public YTiltLauncher(LaunchSubsystem subsystem){
     launchSubsystem = subsystem;
-    addRequirements(subsystem);
+    addRequirements(launchSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    launchSubsystem.setYTiltSpeed(tiltSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,14 +29,12 @@ public class YTilt extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //Check if the back limit switch is pressed then return true
+    //if current angle is greater than reqired angle
     return false;
   }
 }
