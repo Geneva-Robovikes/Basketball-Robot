@@ -16,6 +16,7 @@ import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LaunchSubsystem;
@@ -28,8 +29,8 @@ import frc.robot.subsystems.LaunchSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
+  private LaunchSubsystem launchSubsystem;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    launchSubsystem = new LaunchSubsystem();
 
     new Thread(() -> {
       final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
@@ -66,6 +68,7 @@ public class Robot extends TimedRobot {
         if (cvSink.grabFrame(source) == 0) {
           continue;
         }
+
         Imgproc.blur(source, blurredMat, new Size(7, 7));
         Imgproc.cvtColor(source, hsvMat, Imgproc.COLOR_BGR2HSV);
         Core.inRange(hsvMat, greenLow, greenHigh, mask);
@@ -103,6 +106,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Launch Motor Speed", launchSubsystem.getLauncherSpeed());
+    SmartDashboard.putNumber("X Tilt Motor Speed", launchSubsystem.getXTiltSpeed());
+    SmartDashboard.putNumber("Y Tilt Motor Speed", launchSubsystem.getYTiltSpeed());
+    SmartDashboard.putNumber("Push Motor Speed", launchSubsystem.getPushSpeed());
+    SmartDashboard.putBoolean("Tilt Grounding Switch", launchSubsystem.tiltGroundSwitch.get());
+    SmartDashboard.putBoolean("Ball Check Switch", launchSubsystem.ballCheckSwitch.get());
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

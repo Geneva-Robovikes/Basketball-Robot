@@ -24,19 +24,35 @@ public class LaunchSubsystem extends SubsystemBase {
     launchBottomMotor.setInverted(true);
   }
 
-  public void setLauncherSpeed(float speed) {
+  public void setLauncherSpeed(double speed) {
     launchMotors.set(speed);
   }
 
-  public void setPushSpeed(float speed) {
+  public double getLauncherSpeed(){
+    return launchMotors.get();
+  }
+
+  public void setPushSpeed(double speed) {
     pushMotor.set(speed);
   }
 
-  public void setYTiltSpeed(float yTiltSpeed) {
+  public double getPushSpeed(){
+    return pushMotor.get();
+  }
+
+  public void setYTiltSpeed(double yTiltSpeed) {
     tiltYMotor.set(yTiltSpeed);
   }
 
-  public void setXTiltSpeed(float xTiltSpeed) {
+  public double getYTiltSpeed(){
+    return tiltYMotor.get();
+  }
+
+  public void setXTiltSpeed(double xTiltSpeed) {
     tiltXMotor.set(xTiltSpeed);
+  }
+
+  public double getXTiltSpeed(){
+    return tiltXMotor.get();
   }
 }
