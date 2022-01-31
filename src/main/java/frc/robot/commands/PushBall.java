@@ -7,19 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class PushBall extends CommandBase {
-  private final Intake intake;
   private final LaunchSubsystem launchSubsystem;
+  private final RobotContainer robotContainer;
   private Timer timer;
   private float timerWait = 1;
   private boolean firstTime = true;
   private float pushSpeed = 0.25f;
 
-  public PushBall(LaunchSubsystem subsystem, Intake intake) {
-    this.intake = intake;
+  public PushBall(LaunchSubsystem subsystem, RobotContainer container) {
+    robotContainer = container;
     launchSubsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -50,7 +51,7 @@ public class PushBall extends CommandBase {
   @Override
   public boolean isFinished() {
     if(timer.hasElapsed(timerWait)){
-      CommandScheduler.getInstance().schedule(intake);
+      CommandScheduler.getInstance().schedule(robotContainer.intake);
       return true;
     }
     return false;
