@@ -28,7 +28,7 @@ public class LaunchSubsystem extends SubsystemBase {
 
     launchBottomMotor.setInverted(true);
     wheelEncoder.setDistancePerPulse(Math.PI * launchWheelRadius / 360);
-    distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius/ 360);
+    distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius / 360);
   }
 
   public void setLauncherSpeed(double speed) {

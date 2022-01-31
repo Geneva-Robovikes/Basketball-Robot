@@ -11,9 +11,13 @@ import frc.robot.subsystems.LaunchSubsystem;
 /** An example command that uses an example subsystem. */
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
-  private float speed = 0.9f;
-  private float waitTime = 1.0f;
+  private double speed = 0.9;
+  private double waitTime = 1.0;
+  private double waitForCheck = 0.5;
+  private double requiredDistance;
+  private Timer velCheckTimer;
   private Timer timer;
+  private boolean firstTime;
 
   public LaunchBall(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;
@@ -23,13 +27,25 @@ public class LaunchBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
     launchSubsystem.setLauncherSpeed(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(velCheckTimer.hasElapsed(waitForCheck)) {
+      try {
+        requiredDistance = launchSubsystem.RequiredDistance(launchSubsystem.getWheelVelocity());
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      velCheckTimer.stop();
+      velCheckTimer.reset();
+    }
+    if(requiredDistance < launchSubsystem.getDistance() * 39.3700787 + 1 && requiredDistance > launchSubsystem.getDistance() * 39.3700787 - 1 && firstTime) {
+      timer.start();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
