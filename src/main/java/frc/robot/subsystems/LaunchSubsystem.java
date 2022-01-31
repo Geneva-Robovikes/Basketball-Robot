@@ -16,14 +16,10 @@ public class LaunchSubsystem extends SubsystemBase {
   private PWMVictorSPX launchTopMotor = new PWMVictorSPX(0);
   private PWMVictorSPX launchBottomMotor = new PWMVictorSPX(1);
   private PWMVictorSPX pushMotor = new PWMVictorSPX(2);
-  //private PWMVictorSPX tiltXMotor = new PWMVictorSPX(3); **Motor Used With Vision**
-  private PWMVictorSPX tiltYMotor = new PWMVictorSPX(4);
   private MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
   public DigitalInput ballCheckSwitch = new DigitalInput(0);
-  public DigitalInput tiltGroundSwitch = new DigitalInput(1);
-  private Encoder tiltYEncoder = new Encoder(2, 3);
-  private Encoder wheelEncoder = new Encoder(4, 5);
-  private Encoder distanceEncoder = new Encoder(6, 7);
+  private Encoder wheelEncoder = new Encoder(1, 2);
+  private Encoder distanceEncoder = new Encoder(3, 4);
   public Timer wheelVelTimer = new Timer();
 
   public LaunchSubsystem() {
@@ -31,9 +27,8 @@ public class LaunchSubsystem extends SubsystemBase {
     double distWheelRadius = 1;
 
     launchBottomMotor.setInverted(true);
-    tiltYEncoder.setDistancePerPulse(Math.PI/360);
     wheelEncoder.setDistancePerPulse(Math.PI * launchWheelRadius / 360);
-    distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius/ 12);
+    distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius/ 360);
   }
 
   public void setLauncherSpeed(double speed) {
@@ -42,19 +37,6 @@ public class LaunchSubsystem extends SubsystemBase {
 
   public void setPushSpeed(double speed) {
     pushMotor.set(speed);
-  }
-
-  public void setYTiltSpeed(double yTiltSpeed) {
-    tiltYMotor.set(-yTiltSpeed);
-  }
-
-  public void resetYTiltEncoder() {
-    tiltYEncoder.reset();
-  }
-
-  public double getTiltEncoderRotation() {
-    double dist = tiltYEncoder.getDistance();
-    return dist/(Math.PI * 2) * 360;
   }
 
   public double getDistance() {
@@ -69,10 +51,9 @@ public class LaunchSubsystem extends SubsystemBase {
     return wheelEncoder.getDistance() / wheelVelTimer.get();
   }
 
-  public double requiredAngle(double velocity, double distance, double height, double gravity) {
-    double negB = 2 * Math.pow(velocity, 2) * distance;
-    double disc = (4 * Math.pow(velocity, 4) * Math.pow(distance, 2)) - (4 * Math.pow(velocity, 2) * height * -gravity * Math.pow(distance, 2));
-    double divisor = 4 * Math.pow(velocity, 2) * height;
-    return (negB + Math.sqrt(disc * (Math.PI/4))) / divisor;
+  public double RequiredDistance(double velocity) {
+    double negB = -Math.pow(velocity * Math.sqrt(2) / 2, 2);
+    double disc = velocity * Math.sqrt(Math.pow(velocity * Math.sqrt(2) / 2, 2) - (4 * -4.9 * 10));
+    return (negB - disc) / 9.8;
   }
 }
