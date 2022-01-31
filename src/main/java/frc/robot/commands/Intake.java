@@ -5,14 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class Intake extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
+  private final LaunchBall launchBall;
   private float intakeSpeed = -0.25f;
 
-  public Intake(LaunchSubsystem subsystem) {
+  public Intake(LaunchSubsystem subsystem, LaunchBall launchBall) {
+    this.launchBall = launchBall;
     launchSubsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -37,7 +40,10 @@ public class Intake extends CommandBase {
   @Override
   public boolean isFinished() {
     //Check if the back limit switch is pressed then return true
-    if(launchSubsystem.ballCheckSwitch.get()) {return true;}
+    if(launchSubsystem.ballCheckSwitch.get()) {
+      CommandScheduler.getInstance().schedule(launchBall);
+      return true;
+    }
     else {return false;}
   }
 }

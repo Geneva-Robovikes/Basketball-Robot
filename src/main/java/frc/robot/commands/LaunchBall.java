@@ -6,11 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
+  private final PushBall pushBall;
   private double speed = 0.9;
   private double waitTime = 1.0;
   private double waitForCheck = 0.5;
@@ -19,8 +21,9 @@ public class LaunchBall extends CommandBase {
   private Timer timer;
   private boolean firstTime;
 
-  public LaunchBall(LaunchSubsystem subsystem) {
+  public LaunchBall(LaunchSubsystem subsystem, PushBall pushBall) {
     launchSubsystem = subsystem;
+    this.pushBall = pushBall;
     addRequirements(subsystem);
   }
 
@@ -56,7 +59,10 @@ public class LaunchBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer.hasElapsed(waitTime)){return true;}
+    if(timer.hasElapsed(waitTime)){
+      CommandScheduler.getInstance().schedule(pushBall);
+      return true;
+    }
     else{return false;}
   }
 }
