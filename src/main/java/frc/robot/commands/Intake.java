@@ -38,7 +38,7 @@ public class Intake extends CommandBase {
   @Override
   public boolean isFinished() {
     //Check if the back limit switch is pressed then return true
-    if(launchSubsystem.ballCheckSwitch.get()) {
+    if(launchSubsystem.getCheckSwitchState()) {
       CommandScheduler.getInstance().schedule();
       return true;
     }

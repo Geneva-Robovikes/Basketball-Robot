@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LaunchSubsystem extends SubsystemBase {
 
-  private PWMVictorSPX launchTopMotor = new PWMVictorSPX(0);
-  private PWMVictorSPX launchBottomMotor = new PWMVictorSPX(1);
-  private PWMVictorSPX pushMotor = new PWMVictorSPX(2);
-  private MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
-  public DigitalInput ballCheckSwitch = new DigitalInput(0);
-  private Encoder wheelEncoder = new Encoder(1, 2);
-  private Encoder distanceEncoder = new Encoder(3, 4);
+  private final PWMVictorSPX launchTopMotor = new PWMVictorSPX(0);
+  private final PWMVictorSPX launchBottomMotor = new PWMVictorSPX(1);
+  private final PWMVictorSPX pushMotor = new PWMVictorSPX(2);
+  private final MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
+  private final DigitalInput ballCheckSwitch = new DigitalInput(0);
+  private final Encoder wheelEncoder = new Encoder(1, 2);
+  private final Encoder distanceEncoder = new Encoder(3, 4);
   public Timer wheelVelTimer = new Timer();
 
   public LaunchSubsystem() {
@@ -29,6 +29,10 @@ public class LaunchSubsystem extends SubsystemBase {
     launchBottomMotor.setInverted(true);
     wheelEncoder.setDistancePerPulse(Math.PI * launchWheelRadius / 360);
     distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius / 360);
+  }
+
+  public boolean getCheckSwitchState(){
+    return ballCheckSwitch.get();
   }
 
   public void setLauncherSpeed(double speed) {
