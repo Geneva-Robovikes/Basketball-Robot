@@ -21,7 +21,7 @@ import frc.robot.subsystems.LaunchSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
+  public final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
 
   private final LaunchBall launchBall = new LaunchBall(launchSubsystem);
   private final Intake intake = new Intake(launchSubsystem);
