@@ -43,19 +43,22 @@ public class LaunchSubsystem extends SubsystemBase {
     pushMotor.set(speed);
   }
 
-  public double getDistance() {
+  public double getEncoderDistance() {
+    System.out.println(distanceEncoder.getDistance());
     return distanceEncoder.getDistance();
   }
 
   public double getWheelVelocity() throws InterruptedException {
+    System.out.println("get velocity start");
     wheelVelTimer.start();
     wheelEncoder.reset();
-    wait(100);
+    //wait(100);
     wheelVelTimer.stop();
+    System.out.println("get velocity end");
     return wheelEncoder.getDistance() / wheelVelTimer.get();
   }
 
   public double GetVelocity(double distance, double angle) {
-    return Math.sqrt((-32.171916 * distance) / Math.sin(2 * angle));
+    return Math.sqrt((32.171916 * distance) / Math.sin(2 * angle));
   }
 }

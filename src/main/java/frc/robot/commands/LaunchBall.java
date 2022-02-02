@@ -22,7 +22,8 @@ public class LaunchBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    velocity = launchSubsystem.GetVelocity(launchSubsystem.getDistance() + 15, 45);
+    velocity = launchSubsystem.GetVelocity(launchSubsystem.getEncoderDistance() + 15, 45);
+    System.out.println(velocity);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
