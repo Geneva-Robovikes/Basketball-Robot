@@ -4,21 +4,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
-  private double speed = 0.9;
-  private double waitTime = 1.0;
-  private double waitForCheck = 0.5;
-  private double requiredDistance;
-  private Timer velCheckTimer;
-  private Timer timer;
-  private boolean firstTime;
+  private double velocity;
+  private double currentVelocity;
+  private boolean readyToFire;
 
   public LaunchBall(LaunchSubsystem subsystem) {
     launchSubsystem = subsystem;
@@ -28,23 +22,23 @@ public class LaunchBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    launchSubsystem.setLauncherSpeed(speed);
+    velocity = launchSubsystem.GetVelocity(launchSubsystem.getDistance() + 15, 45);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(velCheckTimer.hasElapsed(waitForCheck)) {
-      try {
-        requiredDistance = launchSubsystem.RequiredDistance(launchSubsystem.getWheelVelocity());
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      velCheckTimer.stop();
-      velCheckTimer.reset();
+    try {
+      currentVelocity = launchSubsystem.getWheelVelocity();
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    if(requiredDistance < launchSubsystem.getDistance() * 39.3700787 + 1 && requiredDistance > launchSubsystem.getDistance() * 39.3700787 - 1 && firstTime) {
-      timer.start();
+
+    if(currentVelocity - 0.5 < velocity) {
+      if(currentVelocity + 0.5 > velocity){
+        readyToFire = true;
+      }
     }
   }
 
@@ -57,10 +51,9 @@ public class LaunchBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer.hasElapsed(waitTime)){
-      CommandScheduler.getInstance().schedule();
+    if(readyToFire){
       return true;
     }
-    else{return false;}
+    return false;
   }
 }

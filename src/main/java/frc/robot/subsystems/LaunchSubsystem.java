@@ -55,9 +55,7 @@ public class LaunchSubsystem extends SubsystemBase {
     return wheelEncoder.getDistance() / wheelVelTimer.get();
   }
 
-  public double RequiredDistance(double velocity) {
-    double negB = -Math.pow(velocity * Math.sqrt(2) / 2, 2);
-    double disc = velocity * Math.sqrt(Math.pow(velocity * Math.sqrt(2) / 2, 2) - (4 * -4.9 * 10));
-    return (negB - disc) / 9.8;
+  public double GetVelocity(double distance, double angle) {
+    return Math.sqrt((-32.171916 * distance) / Math.sin(2 * angle));
   }
 }
