@@ -32,7 +32,6 @@ public class LaunchBall extends CommandBase {
     try {
       currentVelocity = launchSubsystem.getWheelVelocity();
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
