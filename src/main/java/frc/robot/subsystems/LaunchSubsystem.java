@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,11 +14,9 @@ public class LaunchSubsystem extends SubsystemBase {
 
   private final PWMVictorSPX launchTopMotor = new PWMVictorSPX(0);
   private final PWMVictorSPX launchBottomMotor = new PWMVictorSPX(1);
-  private final PWMVictorSPX pushMotor = new PWMVictorSPX(2);
   private final MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
-  private final DigitalInput ballCheckSwitch = new DigitalInput(0);
-  private final Encoder wheelEncoder = new Encoder(1, 2);
-  private final Encoder distanceEncoder = new Encoder(3, 4);
+  private final Encoder wheelEncoder = new Encoder(0, 1);
+  private final Encoder distanceEncoder = new Encoder(2, 3);
   public Timer wheelVelTimer = new Timer();
 
   public LaunchSubsystem() {
@@ -31,16 +28,8 @@ public class LaunchSubsystem extends SubsystemBase {
     distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius / 360);
   }
 
-  public boolean getCheckSwitchState(){
-    return ballCheckSwitch.get();
-  }
-
   public void setLauncherSpeed(double speed) {
     launchMotors.set(speed);
-  }
-
-  public void setPushSpeed(double speed) {
-    pushMotor.set(speed);
   }
 
   public double getEncoderDistance() {

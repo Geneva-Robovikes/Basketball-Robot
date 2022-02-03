@@ -7,10 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchBall;
-import frc.robot.commands.PushBall;
 import frc.robot.subsystems.LaunchSubsystem;
 
 /**
@@ -24,10 +21,6 @@ public class RobotContainer {
   public final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
 
   private final LaunchBall launchBall = new LaunchBall(launchSubsystem);
-  private final Intake intake = new Intake(launchSubsystem);
-  private final PushBall pushBall = new PushBall(launchSubsystem);
-
-  public final SequentialCommandGroup commandLoop = new SequentialCommandGroup(intake, launchBall, pushBall);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -50,6 +43,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return commandLoop;
+    return launchBall;
   }
 }
