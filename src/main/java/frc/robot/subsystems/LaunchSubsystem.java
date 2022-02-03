@@ -54,7 +54,7 @@ public class LaunchSubsystem extends SubsystemBase {
     wheelEncoder.reset();
     //wait(100);
     wheelVelTimer.stop();
-    System.out.println("get velocity end");
+    System.out.println("get velocity end: " + wheelEncoder.getDistance() / wheelVelTimer.get());
     return wheelEncoder.getDistance() / wheelVelTimer.get();
   }
 
