@@ -11,7 +11,7 @@ import frc.robot.subsystems.LaunchSubsystem;
 public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
   private double velocity;
-  private double currentVelocity;
+  private double currentVelocity = 10;
   private boolean readyToFire;
 
   public LaunchBall(LaunchSubsystem subsystem) {
@@ -29,17 +29,18 @@ public class LaunchBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    try {
-      currentVelocity = launchSubsystem.getWheelVelocity();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    //currentVelocity = launchSubsystem.getWheelVelocity();
+
+    if(currentVelocity - 0.5 < velocity && currentVelocity + 0.5 > velocity) {
+        readyToFire = true;
+    } else if(currentVelocity < velocity){
+      double speed = launchSubsystem.getLauncherSpeed();
+      launchSubsystem.setLauncherSpeed(speed += 0.5);
+    } else {
+      double speed = launchSubsystem.getLauncherSpeed();
+      launchSubsystem.setLauncherSpeed(speed -= 0.5);
     }
 
-    if(currentVelocity - 0.5 < velocity) {
-      if(currentVelocity + 0.5 > velocity){
-        readyToFire = true;
-      }
-    }
   }
 
   // Called once the command ends or is interrupted.

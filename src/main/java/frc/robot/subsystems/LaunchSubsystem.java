@@ -32,6 +32,10 @@ public class LaunchSubsystem extends SubsystemBase {
     launchMotors.set(speed);
   }
 
+  public double getLauncherSpeed() {
+    return launchMotors.get();
+  }
+
   public double getEncoderDistance() {
     System.out.println(distanceEncoder.getDistance());
     return distanceEncoder.getDistance();
