@@ -18,12 +18,14 @@ import frc.robot.subsystems.LaunchSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final LaunchSubsystem launchSubsystem = new LaunchSubsystem();
+  public final LaunchSubsystem launchSubsystem;
 
-  private final LaunchBall launchBall = new LaunchBall(launchSubsystem);
+  public final LaunchBall launchBall;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    launchSubsystem = new LaunchSubsystem();
+    launchBall = new LaunchBall(launchSubsystem);
     // Configure the button bindings
     configureButtonBindings();
   }

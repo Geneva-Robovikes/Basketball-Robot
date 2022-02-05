@@ -5,50 +5,49 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.Encoder;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LaunchSubsystem extends SubsystemBase {
 
-  private final PWMVictorSPX launchTopMotor = new PWMVictorSPX(0);
-  private final PWMVictorSPX launchBottomMotor = new PWMVictorSPX(1);
-  private final MotorControllerGroup launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
-  private final Encoder wheelEncoder = new Encoder(0, 1);
-  private final Encoder distanceEncoder = new Encoder(2, 3);
+  private final WPI_TalonFX launchTopMotor;
+  private final WPI_TalonFX launchBottomMotor;
+  private final MotorControllerGroup launchMotors;
   public Timer wheelVelTimer = new Timer();
 
   public LaunchSubsystem() {
-    double launchWheelRadius = 2;
-    double distWheelRadius = 1;
+    System.out.println("Subsystem Created!");
 
-    launchBottomMotor.setInverted(true);
-    wheelEncoder.setDistancePerPulse(Math.PI * launchWheelRadius / 360);
-    distanceEncoder.setDistancePerPulse(Math.PI * distWheelRadius / 360);
+    launchTopMotor = new WPI_TalonFX(0);
+    launchBottomMotor = new WPI_TalonFX(1);
+    launchMotors = new MotorControllerGroup(launchTopMotor, launchBottomMotor);
+    launchTopMotor.setInverted(true);
   }
 
   public void setLauncherSpeed(double speed) {
-    launchMotors.set(speed);
+    launchTopMotor.set(.3);
+    launchBottomMotor.set(.85);
   }
 
   public double getLauncherSpeed() {
-    return launchMotors.get();
+    return launchTopMotor.get();
   }
 
   public double getEncoderDistance() {
-    System.out.println(distanceEncoder.getDistance());
-    return distanceEncoder.getDistance();
+    //return distanceEncoder.getDistance();
+    return 0;
   }
 
-  public double getWheelVelocity() throws InterruptedException {
-    System.out.println("get velocity start");
+  public double getWheelVelocity() {
+    /*System.out.println("get velocity start");
     wheelVelTimer.start();
     wheelEncoder.reset();
     //wait(100);
     wheelVelTimer.stop();
     System.out.println("get velocity end: " + wheelEncoder.getDistance() / wheelVelTimer.get());
-    return wheelEncoder.getDistance() / wheelVelTimer.get();
+    return wheelEncoder.getDistance() / wheelVelTimer.get();*/
+    return 0;
   }
 
   public double GetVelocity(double distance, double angle) {

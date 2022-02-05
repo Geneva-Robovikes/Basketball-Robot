@@ -12,6 +12,7 @@ public class LaunchBall extends CommandBase {
   private final LaunchSubsystem launchSubsystem;
   private double velocity;
   private double currentVelocity = 10;
+  private double maxSpeed = 0.5;
   private boolean readyToFire;
 
   public LaunchBall(LaunchSubsystem subsystem) {
@@ -34,13 +35,17 @@ public class LaunchBall extends CommandBase {
     if(currentVelocity - 0.5 < velocity && currentVelocity + 0.5 > velocity) {
         readyToFire = true;
     } else if(currentVelocity < velocity){
-      double speed = launchSubsystem.getLauncherSpeed();
-      launchSubsystem.setLauncherSpeed(speed += 0.5);
+      double speed = launchSubsystem.getLauncherSpeed() + .0025;
+      if(speed > maxSpeed) {
+        speed = maxSpeed;
+      }
+      launchSubsystem.setLauncherSpeed(speed);
+      System.out.println("Speeding up");
     } else {
-      double speed = launchSubsystem.getLauncherSpeed();
-      launchSubsystem.setLauncherSpeed(speed -= 0.5);
+      double speed = launchSubsystem.getLauncherSpeed() - 0.0025;
+      launchSubsystem.setLauncherSpeed(speed);
     }
-
+    System.out.println(launchSubsystem.getLauncherSpeed());
   }
 
   // Called once the command ends or is interrupted.
@@ -48,7 +53,6 @@ public class LaunchBall extends CommandBase {
   public void end(boolean interrupted) {
     launchSubsystem.setLauncherSpeed(0);
   }
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
